@@ -1,5 +1,7 @@
 package com.sha.rabbitdemo.service;
 
+import com.sha.rabbitdemo.enums.TutException;
+import com.sha.rabbitdemo.exception.ApiException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -18,7 +20,7 @@ public class InvoiceService {
             return new String(bytes);
             // Close the FileInputStream object.
         } catch (IOException e) {
-            throw new UncheckedIOException(e);
+            throw new ApiException(TutException.FILE_NOT_FOUND);
         }
     }
 }
