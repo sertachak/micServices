@@ -1,7 +1,9 @@
 package com.sha.rabbitdemo.service;
 
+import com.sha.rabbitdemo.enums.CustomException;
 import com.sha.rabbitdemo.enums.TutException;
 import com.sha.rabbitdemo.exception.ApiException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -9,9 +11,10 @@ import java.io.*;
 @Service
 public class InvoiceService {
 
-    private final String path = "/Users/sertaconurhakbilen/Desktop/InvoiceReaderFrontend/src/__mocks__/analytics.js";
+    @Value("${invoice.file.path}")
+    private String path;
 
-
+    @CustomException
     public String getExpenses() {
         try (FileInputStream fileInputStream = new FileInputStream(ResourceUtils.getFile(path))) {
             byte[] bytes = new byte[fileInputStream.available()];
