@@ -1,19 +1,27 @@
 package com.sha.rabbitdemo.exception;
 
-import com.sha.rabbitdemo.enums.CustomException;
+import org.aspectj.lang.annotation.AfterThrowing;
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.aspectj.lang.annotation.Aspect;
+import org.springframework.stereotype.Component;
 
-@RestControllerAdvice(annotations = CustomException.class)
-public class ControllerAdvisor extends ResponseEntityExceptionHandler {
+@Aspect
+@Component
+public class ControllerAdvisor{
 
-    @ExceptionHandler(ApiException.class)
-    public ResponseEntity<Object> handleApiException(ApiException e) {
-        HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
-        return new ResponseEntity<>(e.getMessage(), badRequest);
+//    @AfterThrowing(pointcut = "execution(* com.sha.rabbitdemo.Tut6Server.fibonacci(..))", throwing = "e")
+//    public ResponseEntity<Object> handleApiException(ApiException e) {
+//        HttpStatus badRequest = HttpStatus.INTERNAL_SERVER_ERROR;
+//        return new ResponseEntity<>(e.getMessage(), badRequest);
+//    }
+
+
+    @AfterThrowing (pointcut = "execution(* com.sha.rabbitdemo.Tut6Server.*(..)))", throwing = "e")
+    public void logAfterThrowingAllMethods(ApiException e) throws Throwable  {
+        System.out.println("****LoggingAspect.logAfterThrowingAllMethods() ");
     }
 
 }
