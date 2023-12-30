@@ -12,9 +12,29 @@ public class ThreadTry {
         });
         thread.start();
 
-       Runnable runnable = () -> { // lambda expression
-              System.out.println("ThreadTry.runnable");
-         };
-       }
+        Runnable runnable = () -> { // lambda expression
+            String threadName = Thread.currentThread().getName();
+            System.out.println("ThreadTry.runnable" + threadName);
+
+            for (int i = 0; i < 10; i++) {
+                System.out.println("ThreadTry.runnable" + threadName + " " + i);
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+
+        };
+        Thread thread2 = new Thread(runnable);
+        thread2.setDaemon(true);
+        thread2.start();
+
+        try {
+            thread2.join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
+
