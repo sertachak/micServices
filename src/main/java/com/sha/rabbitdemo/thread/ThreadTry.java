@@ -35,9 +35,12 @@ public class ThreadTry {
 
                 while(!sharedThreadValueChanged) {
                     System.out.println("ThreadTry.run" + " " + Thread.currentThread().getName() + " "  + sharedThreadValue);
-                    sharedThreadValue++;
-                    if (sharedThreadValue == 5) {
-                        sharedThreadValueChanged = true;
+                    synchronized (this){
+                        System.out.println("ThreadTry.run" + " " + Thread.currentThread().getName() + " inside syncronized :  "  + sharedThreadValue);
+                        sharedThreadValue++;
+                        if (sharedThreadValue == 5) {
+                            sharedThreadValueChanged = true;
+                        }
                     }
                 }
             }
