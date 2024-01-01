@@ -25,6 +25,7 @@ public class ThreadTry {
 
         };
 
+        ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
         Runnable runnableWithASharedValue = new Runnable() { // anonymous class
 
             private volatile int sharedThreadValue = 1;
@@ -35,18 +36,19 @@ public class ThreadTry {
 
                 while(!sharedThreadValueChanged) {
                     System.out.println("ThreadTry.run" + " " + Thread.currentThread().getName() + " "  + sharedThreadValue);
-                    synchronized (this){
+                    synchronized (this){ //keep in the mind that sync blocks do not guarantee fairness !!
                         System.out.println("ThreadTry.run" + " " + Thread.currentThread().getName() + " inside syncronized :  "  + sharedThreadValue);
                         sharedThreadValue++;
+                        final Integer threadVal = threadLocal.get();
+                        threadLocal.set(Math.min(threadVal == null ? sharedThreadValue : threadVal, sharedThreadValue));
                         if (sharedThreadValue == 5) {
                             sharedThreadValueChanged = true;
                         }
                     }
                 }
+                System.out.println("Min thread val: " + threadLocal.get());
             }
         };
-
-
         Thread thread2 = new Thread(runnableWithASharedValue);
         thread2.start();
 
