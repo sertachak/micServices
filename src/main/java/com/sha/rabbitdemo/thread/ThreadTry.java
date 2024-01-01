@@ -1,5 +1,7 @@
 package com.sha.rabbitdemo.thread;
 
+import java.sql.SQLOutput;
+
 public class ThreadTry {
 
     public static void main(String[] args) {
@@ -26,6 +28,12 @@ public class ThreadTry {
         };
 
         ThreadLocal<Integer> threadLocal = new ThreadLocal<>();
+        InheritableThreadLocal<Integer> inheritableThreadLocal =  new InheritableThreadLocal<Integer>(){
+            @Override
+            protected Integer initialValue() {
+                return 1;
+            }
+        };
         Runnable runnableWithASharedValue = new Runnable() { // anonymous class
 
             private volatile int sharedThreadValue = 1;
@@ -41,12 +49,14 @@ public class ThreadTry {
                         sharedThreadValue++;
                         final Integer threadVal = threadLocal.get();
                         threadLocal.set(Math.min(threadVal == null ? sharedThreadValue : threadVal, sharedThreadValue));
+                        inheritableThreadLocal.set(Math.min(inheritableThreadLocal.get(), sharedThreadValue));
                         if (sharedThreadValue == 5) {
                             sharedThreadValueChanged = true;
                         }
                     }
                 }
                 System.out.println("Min thread val: " + threadLocal.get());
+                System.out.println("Min thread val inherited: " + inheritableThreadLocal.get());
             }
         };
         Thread thread2 = new Thread(runnableWithASharedValue);
