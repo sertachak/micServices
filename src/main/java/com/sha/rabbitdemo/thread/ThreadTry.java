@@ -1,6 +1,9 @@
 package com.sha.rabbitdemo.thread;
 
 import java.sql.SQLOutput;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 public class ThreadTry {
 
@@ -38,6 +41,7 @@ public class ThreadTry {
 
             private volatile int sharedThreadValue = 1;
             private volatile boolean sharedThreadValueChanged = false;
+            Map<String, String> threadMap = new ConcurrentHashMap<>();
             @Override
             public void run() {
                 System.out.println("ThreadTry.run"+ " " + Thread.currentThread().getName());
@@ -47,11 +51,21 @@ public class ThreadTry {
                     synchronized (this){ //keep in the mind that sync blocks do not guarantee fairness !!
                         System.out.println("ThreadTry.run" + " " + Thread.currentThread().getName() + " inside syncronized :  "  + sharedThreadValue);
                         sharedThreadValue++;
+
                         final Integer threadVal = threadLocal.get();
                         threadLocal.set(Math.min(threadVal == null ? sharedThreadValue : threadVal, sharedThreadValue));
                         inheritableThreadLocal.set(Math.min(inheritableThreadLocal.get(), sharedThreadValue));
                         if (sharedThreadValue == 5) {
                             sharedThreadValueChanged = true;
+                        }
+
+                        if(threadMap.containsKey("key")){
+                            String val = threadMap.remove("key");
+                            if(val == null){
+                                System.out.println("Val null in the key");
+                            }
+                        } else {
+                            threadMap.put("key", "val");
                         }
                     }
                 }
