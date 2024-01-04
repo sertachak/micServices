@@ -26,7 +26,7 @@ public class Calculation {
         }
     }
 
-    private long Calculate(Calculate ...calculations) {
+    private long calculate(Calculate ...calculations) {
         try
         {
             lock.lock();
