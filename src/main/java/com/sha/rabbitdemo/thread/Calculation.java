@@ -4,7 +4,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 public class Calculation {
 
-    ReentrantLock lock = new ReentrantLock();
+    ReentrantLock lock = new ReentrantLock(true);//if parameter is true, then it is a fair lock
 
     private long counter = 0;
 
