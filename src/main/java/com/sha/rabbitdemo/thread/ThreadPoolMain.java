@@ -12,7 +12,12 @@ public class ThreadPoolMain {
         Logger logger = LoggerFactory.getLogger(ThreadPoolMain.class);
 
         try(ExecutorService executorServiceManual = new ThreadPoolExecutor(3, 10, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(128))){
-            executorServiceManual.submit(() -> logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName()));
+            final Future<?> submit = executorServiceManual.submit(() -> logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName()));
+
+            if(submit.isDone()) {
+                logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName() + " " + "is done");
+            }
+
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
