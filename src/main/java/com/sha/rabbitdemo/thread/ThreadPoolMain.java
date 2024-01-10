@@ -3,15 +3,22 @@ package com.sha.rabbitdemo.thread;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.*;
 
 public class ThreadPoolMain {
 
 
     public static void main(String[] args) {
         Logger logger = LoggerFactory.getLogger(ThreadPoolMain.class);
+
+        try(ExecutorService executorServiceManual = new ThreadPoolExecutor(3, 10, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(128))){
+            executorServiceManual.submit(() -> logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName()));
+        } catch (Exception e) {
+            logger.error(e.getMessage());
+        }
+
+
+
         try(ClosableExecutorService executorService = new ClosableExecutorService(Executors.newFixedThreadPool(3))) {
             for(int i = 0; i< 10; i++) {
                 int taskNumber = i;
