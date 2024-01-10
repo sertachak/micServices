@@ -13,6 +13,7 @@ public class ThreadPoolMain {
 
         try(ExecutorService executorServiceManual = new ThreadPoolExecutor(3, 10, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(128))){
             final Future<?> submit = executorServiceManual.submit(() -> logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName()));
+            executorServiceManual.submit(() -> "This is the overloaded submit method which returns a Future object and accepts a Callable object");
 
             if(submit.isDone()) {
                 logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName() + " " + "is done");
@@ -32,6 +33,16 @@ public class ThreadPoolMain {
         } catch (Exception e) {
             logger.error(e.getMessage());
         }
+    }
+
+
+    private static Callable newCallable() {//which implements Callable interface is used in the submit method
+        return new Callable() {//anonymous class
+            @Override
+            public Object call() throws Exception {
+                return null;
+            }
+        };
     }
 
     static class ClosableExecutorService implements AutoCloseable {
