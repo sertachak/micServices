@@ -2,7 +2,9 @@ package com.sha.rabbitdemo.thread;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.scheduling.concurrent.CustomizableThreadFactory;
 
+import java.io.Closeable;
 import java.util.concurrent.*;
 
 public class ThreadPoolMain {
@@ -11,7 +13,8 @@ public class ThreadPoolMain {
     public static void main(String[] args) {
         Logger logger = LoggerFactory.getLogger(ThreadPoolMain.class);
 
-        try(ExecutorService executorServiceManual = new ThreadPoolExecutor(3, 10, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(128))){
+        ExecutorService executorServiceManual = new ThreadPoolExecutor(3, 10, 3000, TimeUnit.MILLISECONDS, new ArrayBlockingQueue<>(128));
+        try(Closeable closeable = executorServiceManual::shutdown){
             final Future<?> submit = executorServiceManual.submit(() -> logger.info("ThreadPoolExecutor" + " " + Thread.currentThread().getName()));
             executorServiceManual.submit(() -> "This is the overloaded submit method which returns a Future object and accepts a Callable object");
 
@@ -25,7 +28,7 @@ public class ThreadPoolMain {
 
 
 
-        try(ClosableExecutorService executorService = new ClosableExecutorService(Executors.newFixedThreadPool(3))) {
+        try(ClosableExecutorService executorService = new ClosableExecutorService(Executors.newFixedThreadPool(3,new CustomizableThreadFactory()))) {
             for(int i = 0; i< 10; i++) {
                 int taskNumber = i;
                 executorService.submit( () -> logger.info("FixedThreadPool" + " " + Thread.currentThread().getName() +  " " + "taskNo: "  + taskNumber));
