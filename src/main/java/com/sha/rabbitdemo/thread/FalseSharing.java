@@ -5,7 +5,7 @@ public class FalseSharing {
     public static void main(String[] args) {
 
         Counter counter = new FalseSharing().new Counter();
-        //Counter counter2 = counter; // creates false sharing
+        //Counter counter2 = counter; // creates false sharing. The variables should we volatile in order to write them to main memory and not cache
         Counter counter2 = new FalseSharing().new Counter();
         final long c = 1_000_000_000;
 
@@ -31,8 +31,8 @@ public class FalseSharing {
     }
 
     private class Counter {
-        private long counter = 0;
-        private long counter2 = 0;
+        private volatile long counter = 0;
+        private volatile long counter2 = 0;
 
         public void increment() {
             counter++;
