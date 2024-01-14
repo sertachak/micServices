@@ -1,0 +1,45 @@
+package com.sha.rabbitdemo.thread;
+
+public class FalseSharing {
+
+    public static void main(String[] args) {
+
+        Counter counter = new FalseSharing().new Counter();
+        //Counter counter2 = counter; // creates false sharing
+        Counter counter2 = new FalseSharing().new Counter();
+        final long c = 1_000_000_000;
+
+        Thread t1 = new Thread(() -> {
+            long start = System.currentTimeMillis();
+            for (int i = 0 ; i < c ; i++) {
+                counter.increment();
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("Time taken: " + (end - start));
+        });
+        Thread t2 = new Thread(() -> {
+            long start = System.currentTimeMillis();
+            for (int i = 0 ; i < c ; i++) {
+                counter2.increment2();
+            }
+            long end = System.currentTimeMillis();
+            System.out.println("Time taken: " + (end - start));
+        });
+        t1.start();
+        t2.start();
+
+    }
+
+    private class Counter {
+        private long counter = 0;
+        private long counter2 = 0;
+
+        public void increment() {
+            counter++;
+        }
+
+        public void increment2() {
+            counter2++;
+        }
+    }
+}
