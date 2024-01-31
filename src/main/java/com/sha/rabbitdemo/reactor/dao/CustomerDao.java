@@ -28,7 +28,7 @@ public class CustomerDao {
     }
 
     public Flux<Customer> loadAllCustomersStream() {
-        return Flux.range(1, 50)
+        return Flux.range(1, 10)
                 .delayElements(java.time.Duration.ofSeconds(1))
                 .doOnEach(i -> System.out.println("Emitting " + i.get()))
                 .map(i -> new Customer(String.valueOf(i), "Object" + i))

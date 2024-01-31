@@ -17,7 +17,7 @@ public class CustomerController {
         this.customerDao = customerDao;
     }
 
-    @GetMapping("/reactive")
+    @GetMapping(value = "/reactive", produces = "application/stream+json")
     public Flux<Customer> loadAllCustomers() {
         return customerDao.loadAllCustomersStream();
     }
