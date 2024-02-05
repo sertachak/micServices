@@ -23,4 +23,11 @@ public class CustomerService {
                 .contentType(MediaType.TEXT_EVENT_STREAM)
                 .body(customerFlux);
     }
+
+    public ServerResponse getSpecificCustomer(String id) {
+        Mono<Customer> customerMono = customerDao.loadAllCustomersStream().filter(customer -> customer.getId().equals(id)).next();
+        return ServerResponse.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(customerMono);
+    }
 }

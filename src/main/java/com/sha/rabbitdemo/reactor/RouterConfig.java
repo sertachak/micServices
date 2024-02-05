@@ -19,6 +19,7 @@ public class RouterConfig {
     RouterFunction<?> routerFunction() {
         return RouterFunctions.route()
                 .GET("/customer/reactive", request -> customerService.loadCustomersStream())
+                .GET("/customer/{id}", request -> customerService.getSpecificCustomer(request.pathVariable("id")))
                 .build();
     }
 }
