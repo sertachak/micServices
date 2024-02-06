@@ -20,6 +20,7 @@ public class RouterConfig {
         return RouterFunctions.route()
                 .GET("/customer/reactive", request -> customerService.loadCustomersStream())
                 .GET("/customer/{id}", request -> customerService.getSpecificCustomer(request.pathVariable("id")))
+                .POST("/customer", request -> customerService.createCustomer(request))
                 .build();
     }
 }
