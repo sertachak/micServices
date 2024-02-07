@@ -2,12 +2,15 @@ package com.sha.rabbitdemo.reactor.service;
 
 import com.sha.rabbitdemo.reactor.dao.CustomerDao;
 import com.sha.rabbitdemo.reactor.dto.Customer;
+import jakarta.servlet.ServletException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.function.ServerRequest;
 import org.springframework.web.servlet.function.ServerResponse;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.io.IOException;
 
 @Service
 public class CustomerService {
@@ -33,8 +36,8 @@ public class CustomerService {
                 .body(customerMono);
     }
 
-    public ServerResponse createCustomer(ServerRequest request) {
-        Mono<Customer> customerMono = request.bodyToMono(Customer.class);
+    public ServerResponse createCustomer(ServerRequest request) throws ServletException, IOException {
+        Mono<Customer> customerMono = Mono.just(request.body(Customer.class));
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(customerMono);
