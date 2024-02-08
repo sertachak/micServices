@@ -31,6 +31,7 @@ public class ProductService {
     public Mono<ProductDto> saveProduct(Mono<ProductDto> productDtoMono){
         return productDtoMono.map(AppUtils::toProduct)
                 .flatMap(productRepository::insert)
+                .doOnSuccess(p -> System.out.println("Product saved successfully"))
                 .map(AppUtils::toProductDto);
     }
 }
