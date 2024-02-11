@@ -2,6 +2,7 @@ package com.sha.rabbitdemo.reactor.service;
 
 import com.sha.rabbitdemo.reactor.dao.CustomerDao;
 import com.sha.rabbitdemo.reactor.dto.Customer;
+import com.sha.rabbitdemo.reactor.mockData.MockData;
 import jakarta.servlet.ServletException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
@@ -41,5 +42,9 @@ public class CustomerService {
         return ServerResponse.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(customerMono);
+    }
+
+    public Flux<Customer> loadAllCustomersMock() {
+        return Flux.fromStream(MockData.INSTANCE.getListOfCustomersMock().stream());
     }
 }
