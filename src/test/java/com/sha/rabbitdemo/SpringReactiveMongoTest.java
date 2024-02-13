@@ -33,7 +33,6 @@ class SpringReactiveMongoCrudApplicationTests {
 
         webTestClient.post().uri("/api/product/here")
                 .body(Mono.just(productDtoMono),ProductDto.class)
-                .
                 .exchange()
                 .expectStatus().isOk()
                 .expectBody(ProductDto.class);
