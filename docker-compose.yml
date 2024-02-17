@@ -1,0 +1,14 @@
+version: "3.8"
+
+services:
+  axonserver:
+    image: axoniq/axonserver:latest
+    container_name: axonserver
+    ports:
+      - "8024:8024" # HTTP management port
+      - "8124:8124" # Event Store port
+    environment:
+      AXON_SERVER_DEVMODE: "true" # Enable devmode
+      # Add other environment variables here if needed (e.g., database connection details)
+    volumes:
+      - ./data:/axonserver/data
