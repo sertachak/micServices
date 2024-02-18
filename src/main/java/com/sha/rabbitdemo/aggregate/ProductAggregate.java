@@ -21,6 +21,8 @@ public class ProductAggregate {
     private BigDecimal price;
     private Integer qty;
 
+    public ProductAggregate() {//us ed by axon framework
+    }
 
     @CommandHandler
     public ProductAggregate(ProductCreateCommand createProductCommand) {
@@ -30,11 +32,9 @@ public class ProductAggregate {
 
         BeanUtils.copyProperties(createProductCommand, productCreatedEvent);
 
-        AggregateLifecycle.apply(productCreatedEvent);
+        AggregateLifecycle.apply(productCreatedEvent);// product created event is dispatched after this line
     }
 
-    public ProductAggregate() {
-    }
 
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent) {
