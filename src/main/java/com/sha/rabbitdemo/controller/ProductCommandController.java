@@ -13,7 +13,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@RequestMapping("fruit/api/v1")
+@RequestMapping("product/api/v1")
 public class ProductCommandController {
 
     private Logger logger = LoggerFactory.getLogger(ProductCommandController.class);
