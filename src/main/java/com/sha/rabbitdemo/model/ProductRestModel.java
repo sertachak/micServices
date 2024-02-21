@@ -10,6 +10,6 @@ import java.math.BigDecimal;
 public class ProductRestModel {
 
     private String name;
-    private BigDecimal price;
+    private Double price;
     private Integer qty;
 }
