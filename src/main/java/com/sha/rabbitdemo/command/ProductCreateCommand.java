@@ -13,6 +13,6 @@ public class ProductCreateCommand {
     @TargetAggregateIdentifier
     private String productId;
     private String name;
-    private BigDecimal price;
+    private Double price;
     private Integer qty;
 }
