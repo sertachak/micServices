@@ -2,6 +2,7 @@ package com.sha.rabbitdemo.controller;
 
 import com.sha.rabbitdemo.command.ProductCreateCommand;
 import com.sha.rabbitdemo.model.ProductRestModel;
+import jakarta.validation.Valid;
 import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ public class ProductCommandController {
     }
 
     @PostMapping
-    public String addProduct(@RequestBody ProductRestModel productRestModel) throws ExecutionException, InterruptedException {
+    public String addProduct(@Valid @RequestBody ProductRestModel productRestModel) throws ExecutionException, InterruptedException {
         ProductCreateCommand  productCreateCommand = ProductCreateCommand.builder()
                 .productId(UUID.randomUUID().toString())
                 .name(productRestModel.getName())
