@@ -4,3 +4,9 @@ spring:
         database: ProductsDB
         host: localhost
         port: 27017
+
+server:
+    validation:
+      error:
+        include-message: always
+        include-binding-errors: always
