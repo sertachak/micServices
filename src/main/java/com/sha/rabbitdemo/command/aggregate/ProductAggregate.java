@@ -1,4 +1,4 @@
-package com.sha.rabbitdemo.aggregate;
+package com.sha.rabbitdemo.command.aggregate;
 
 import com.sha.rabbitdemo.command.ProductCreateCommand;
 import com.sha.rabbitdemo.event.ProductCreatedEvent;
