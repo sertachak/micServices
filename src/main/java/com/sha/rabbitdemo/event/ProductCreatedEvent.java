@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductCreatedEvent {
 
-    private String productId;
+    private String id;
     private String name;
     private BigDecimal price;
     private Integer quantity;

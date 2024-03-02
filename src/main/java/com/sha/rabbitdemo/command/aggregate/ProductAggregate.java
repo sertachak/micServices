@@ -38,7 +38,7 @@ public class ProductAggregate {
 
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent) {
-        this.productId = productCreatedEvent.getProductId();
+        this.productId = productCreatedEvent.getId();
         this.name = productCreatedEvent.getName();
         this.price = productCreatedEvent.getPrice();
         this.qty = productCreatedEvent.getQuantity();

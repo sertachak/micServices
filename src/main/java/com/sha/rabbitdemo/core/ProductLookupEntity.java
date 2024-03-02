@@ -9,7 +9,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Document(collection = "product-lookup")
+@Document(collection = "productLookup")
 public class ProductLookupEntity {
     // normally it should be stored in a separate database
     @Id

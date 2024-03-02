@@ -31,7 +31,7 @@ public class ProductCommandController {
     @PostMapping
     public String addProduct(@Valid @RequestBody ProductRestModel productRestModel) throws ExecutionException, InterruptedException {
         ProductCreateCommand  productCreateCommand = ProductCreateCommand.builder()
-                .productId(UUID.randomUUID().toString())
+                .id(UUID.randomUUID().toString())
                 .name(productRestModel.getName())
                 .price(productRestModel.getPrice())
                 .qty(productRestModel.getQty())
@@ -40,9 +40,9 @@ public class ProductCommandController {
         final String localPort = environment.getProperty("local.server.port");
         logger.info("The message got by environment is: {}", localPort);
 
-        final CompletableFuture<Object> product = commandGateway.send(productCreateCommand);
+        final Object o = commandGateway.sendAndWait(productCreateCommand);
 
-        return product.get().toString();
+        return o.toString();
     }
 
 }
