@@ -12,7 +12,11 @@ server:
         include-binding-errors: always
 
 axon:
-  eventhandling:
-    processors:
-      product-group:
-        mode= subscribing
+  processing-group:
+    name: product-group
+    eventhandling:
+        processors:
+            product-group:
+            mode: subscribing
+            source: product-source
+            token-store: mongodb
