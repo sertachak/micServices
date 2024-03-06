@@ -1,7 +1,10 @@
 package com.sha.rabbitdemo;
 
 import com.sha.rabbitdemo.command.CreateProductCommandInterceptor;
+import com.sha.rabbitdemo.core.errorhandling.ProductServiceEventsErrorHandler;
 import org.axonframework.commandhandling.CommandBus;
+import org.axonframework.config.EventProcessingConfiguration;
+import org.axonframework.config.EventProcessingConfigurer;
 import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +23,13 @@ public class RabbitDemoApplication {
     @Autowired
     public void registerCreateProductCommandMessageDispatchInterceptor(ApplicationContext context, CommandBus commandBus) {
         commandBus.registerDispatchInterceptor(context.getBean(CreateProductCommandInterceptor.class));
+    }
+
+    @Autowired
+    public void eventListenerInvocationErrorHandler(EventProcessingConfigurer eventProcessingConfigurer) {
+        eventProcessingConfigurer
+                .registerListenerInvocationErrorHandler("product-group",
+                        config -> new ProductServiceEventsErrorHandler());
     }
 
 }
