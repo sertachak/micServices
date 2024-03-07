@@ -25,6 +25,7 @@ public class RabbitDemoApplication {
         commandBus.registerDispatchInterceptor(context.getBean(CreateProductCommandInterceptor.class));
     }
 
+    //this listener invocation errorHandler is used to handle the exceptions thrown by the event listeners
     @Autowired
     public void eventListenerInvocationErrorHandler(EventProcessingConfigurer eventProcessingConfigurer) {
         eventProcessingConfigurer
