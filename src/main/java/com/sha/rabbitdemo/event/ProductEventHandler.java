@@ -28,4 +28,12 @@ public class ProductEventHandler {
        productService.saveProduct(productDtoMono).block();
        //https://discuss.axoniq.io/t/asynchronous-event-handlers/4283
     }
+
+    @EventHandler
+    public void  on(ProductReservedEvent productReservedEvent){
+        productService.getProductById(productReservedEvent.getProductId()).map(product -> {
+            product.setQty(product.getQty() - productReservedEvent.getQuantity());
+            return Mono.just(product);
+        }).flatMap(productService::saveProduct).block();
+    }
 }
