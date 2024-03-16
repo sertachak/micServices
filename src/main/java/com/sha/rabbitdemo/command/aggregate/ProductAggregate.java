@@ -2,6 +2,8 @@ package com.sha.rabbitdemo.command.aggregate;
 
 import com.sha.rabbitdemo.command.ProductCreateCommand;
 import com.sha.rabbitdemo.event.ProductCreatedEvent;
+import com.sha.rabbitdemo.event.ProductReservedEvent;
+import com.sha.rabbitdemo.microservices.saga.ReserveProductCommand;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -35,6 +37,19 @@ public class ProductAggregate {
         AggregateLifecycle.apply(productCreatedEvent);// product created event is dispatched after this line
     }
 
+    @CommandHandler
+    public void handle(ReserveProductCommand reserveProductCommand) {
+        //You can perform all the validations
+        if(qty < reserveProductCommand.getQuantity()){ //according to the targetIdentifierAggregate we can take a look at the current state of the aggregate
+            throw new IllegalArgumentException("Insufficient product quantity.");
+        }
+
+        ProductReservedEvent productReservedEvent = new ProductReservedEvent();
+        BeanUtils.copyProperties(reserveProductCommand, productReservedEvent);
+
+        AggregateLifecycle.apply(productReservedEvent);
+
+    }
 
     @EventSourcingHandler
     public void on(ProductCreatedEvent productCreatedEvent) {
@@ -42,5 +57,10 @@ public class ProductAggregate {
         this.name = productCreatedEvent.getName();
         this.price = productCreatedEvent.getPrice();
         this.qty = productCreatedEvent.getQuantity();
+    }
+
+    @EventSourcingHandler
+    public void on(ProductReservedEvent productReservedEvent) {
+        this.qty -= productReservedEvent.getQuantity();
     }
 }
