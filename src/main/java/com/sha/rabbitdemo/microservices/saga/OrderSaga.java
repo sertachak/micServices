@@ -1,6 +1,7 @@
 package com.sha.rabbitdemo.microservices.saga;
 
 import com.sha.rabbitdemo.event.ProductCreatedEvent;
+import com.sha.rabbitdemo.event.ProductReservedEvent;
 import org.axonframework.commandhandling.CommandCallback;
 import org.axonframework.commandhandling.CommandMessage;
 import org.axonframework.commandhandling.CommandResultMessage;
@@ -37,5 +38,10 @@ public class OrderSaga {
                 }
             }
         });
+    }
+
+    @SagaEventHandler(associationProperty = "orderId")
+    public void handle(ProductReservedEvent event) {
+        //Process user payment after handling event in processingGroup
     }
 }
